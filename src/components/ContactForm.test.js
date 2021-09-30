@@ -94,62 +94,61 @@ test('renders "lastName is a required field" if an last name is not entered and 
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
     render(<ContactForm/>);
-    const fNameInput = screen.getByPlaceholderText("Edd");
-    userEvent.type(fNameInput, 'Billy');
+    const fNameInput = screen.getByPlaceholderText(/edd/i);
+    userEvent.type(fNameInput, "Billy");
 
-    const lNameInput = screen.getByPlaceholderText("Burke");
-    userEvent.type(lNameInput, 'Paris');
+    const lNameInput = screen.getByPlaceholderText(/burke/i);
+    userEvent.type(lNameInput, "Paris");
 
-    const emailInput = screen.getByPlaceholderText("bluebill1049@hotmail.com");
-    userEvent.type(emailInput, 'billybernard54@gmail.com');
+    const emailInput = screen.getByPlaceholderText(/bluebill1049@hotmail.com/i);
+    userEvent.type(emailInput, "billybernard54@gmail.com");
 
-    const button = screen.getByRole('button');
+    const button = screen.getByRole("button");
     userEvent.click(button);
 
-    const fNameFeedback = await screen.findByText("Billy");
+    const fNameFeedback = await screen.findByTestId(/firstnameDisplay/i);
     expect(fNameFeedback).toBeInTheDocument();
 
-    const lNameFeedback = await screen.findByText("Paris");
+    const lNameFeedback = await screen.findByTestId(/lastnameDisplay/i);
     expect(lNameFeedback).toBeInTheDocument();
 
-    const emailFeedback = await screen.findByText("billybernard54@gmail.com");
+    const emailFeedback = await screen.findByTestId(/emailDisplay/i);
     expect(emailFeedback).toBeInTheDocument();
 
-    const messageInput = screen.queryByText(/message/i);
-    expect(messageInput).not.toBeInDocument();
+    const messageInput = screen.queryByTestId(/messageDisplay/i);
+
+    expect(messageInput).toBeNull();
 
     
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
     render(<ContactForm/>);
-    const fNameInput = screen.getByPlaceholderText("Edd");
-    userEvent.type(fNameInput, 'Billy');
+    const firstNameInput = screen.getByPlaceholderText(/edd/i);
+    userEvent.type(firstNameInput, "Billy");
 
-    const lNameInput = screen.getByPlaceholderText("Burke");
-    userEvent.type(lNameInput, 'Paris');
+    const lastNameInput = screen.getByPlaceholderText(/burke/i);
+    userEvent.type(lastNameInput, "Paris");
 
-    const emailInput = screen.getByPlaceholderText("bluebill1049@hotmail.com");
-    userEvent.type(emailInput, 'billybernard54@gmail.com');
+    const emailInput = screen.getByPlaceholderText(/bluebill1049@hotmail.com/i);
+    userEvent.type(emailInput, "billybernard54@gmail.com");
 
     const messageInput = screen.queryByLabelText(/message/i);
-    userEvent.type(messageInput, 'hello my name is');
+    userEvent.type(messageInput, "message");
 
-    const button = screen.getByRole('button');
+    const button = screen.getByRole("button");
     userEvent.click(button);
 
-    const fNameFeedback = await screen.findByText("Billy");
+    const fNameFeedback = await screen.findByTestId(/firstnameDisplay/i);
     expect(fNameFeedback).toBeInTheDocument();
 
-    const lNameFeedback = await screen.findByText("Paris");
+    const lNameFeedback = await screen.findByTestId(/lastnameDisplay/i);
     expect(lNameFeedback).toBeInTheDocument();
 
-    const emailFeedback = await screen.findByText("billybernard54@gmail.com");
+    const emailFeedback = await screen.findByTestId(/emailDisplay/i);
     expect(emailFeedback).toBeInTheDocument();
 
-    const messageFeedback = await screen.findByText("hello");
+    const messageFeedback = await screen.findByTestId(/messageDisplay/i);
     expect(messageFeedback).toBeInTheDocument();
-
-
 
 });
